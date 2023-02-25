@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @Component
-public class LogInterceptor implements HandlerInterceptor {
+public class RequestLogInterceptor implements HandlerInterceptor {
 
     @Value("${spring.custom.enable-logging-request-details:true}")
     private Boolean enableLoggingRequestDetails;

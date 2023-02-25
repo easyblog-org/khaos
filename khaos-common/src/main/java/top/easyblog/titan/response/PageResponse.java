@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Paging response parameters
  *
@@ -35,6 +37,6 @@ public class PageResponse<T> {
     /**
      * 分页数据
      */
-    private T data;
+    private List<T> data;
 
 }

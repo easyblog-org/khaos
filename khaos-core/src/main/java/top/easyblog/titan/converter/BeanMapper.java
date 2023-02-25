@@ -1,6 +1,13 @@
 package top.easyblog.titan.converter;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import top.easyblog.titan.request.account.CreateAccountRequest;
+import top.easyblog.titan.request.account.UpdateAccountRequest;
+import top.easyblog.titan.request.user.CreateUserAccountRequest;
+import top.easyblog.titan.request.user.CreateUserRequest;
+import top.easyblog.titan.request.user.UpdateUserAccountRequest;
+import top.easyblog.titan.request.user.UpdateUserRequest;
 
 /**
  * @author: frank.huang
@@ -8,4 +15,18 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface BeanMapper {
+
+
+    CreateUserRequest buildUserCreateRequest(CreateUserAccountRequest request);
+
+    @Mapping(target = "identifier",source = "email")
+    @Mapping(target = "credential",source = "password")
+    CreateAccountRequest buildCreateAccountRequest(CreateUserAccountRequest request);
+
+
+    UpdateUserRequest buildUserUpdateRequest(UpdateUserAccountRequest request);
+
+    @Mapping(target = "identifier",source = "email")
+    @Mapping(target = "credential",source = "password")
+    UpdateAccountRequest buildAccountUpdateRequest(UpdateUserAccountRequest request);
 }
