@@ -3,12 +3,14 @@ package top.easyblog.titan.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.easyblog.titan.bean.account.AccountBean;
 import top.easyblog.titan.bean.user.UserDetailsBean;
 import top.easyblog.titan.converter.BeanMapper;
 import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.feign.client.AccountClient;
 import top.easyblog.titan.feign.client.ZeusClient;
 import top.easyblog.titan.request.account.CreateAccountRequest;
+import top.easyblog.titan.request.account.QueryAccountRequest;
 import top.easyblog.titan.request.account.UpdateAccountRequest;
 import top.easyblog.titan.request.user.*;
 import top.easyblog.titan.response.KhaosResultCode;
@@ -50,7 +52,7 @@ public class UserService {
             throw new BusinessException(KhaosResultCode.CREATE_USER_FAILED);
         }
 
-        CreateAccountRequest createAccountRequest = beanMapper.buildCreateAccountRequest(request);
+        CreateAccountRequest createAccountRequest = beanMapper.buildCreateAccountRequest(request, userDetailsBean.getId());
         accountClient.request(() -> accountClient.createAccount(createAccountRequest));
         return userDetailsBean;
     }
@@ -64,6 +66,15 @@ public class UserService {
 
         UpdateUserRequest updateUserAccountRequest = beanMapper.buildUserUpdateRequest(request);
         zeusClient.request(() -> zeusClient.updateUser(userCode, updateUserAccountRequest));
+
+        AccountBean accountBean = accountClient.request(() -> accountClient.details(QueryAccountRequest.builder()
+                .userId(userDetailsBean.getId()).identityType(request.getIdentityType()).build()));
+        if (Objects.isNull(accountBean)) {
+            CreateAccountRequest createAccountRequest = beanMapper.buildCreateAccountRequest(CreateUserAccountRequest.builder()
+                    .identityType(request.getIdentityType()).email(request.getEmail()).password(request.getPassword()).build(), userDetailsBean.getId());
+            accountClient.request(() -> accountClient.createAccount(createAccountRequest));
+            return;
+        }
 
         UpdateAccountRequest updateAccountRequest = beanMapper.buildAccountUpdateRequest(request);
         accountClient.request(() -> accountClient.updateAccount(userDetailsBean.getId(), request.getIdentityType(), updateAccountRequest));

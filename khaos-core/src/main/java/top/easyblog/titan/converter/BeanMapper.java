@@ -19,9 +19,10 @@ public interface BeanMapper {
 
     CreateUserRequest buildUserCreateRequest(CreateUserAccountRequest request);
 
-    @Mapping(target = "identifier",source = "email")
-    @Mapping(target = "credential",source = "password")
-    CreateAccountRequest buildCreateAccountRequest(CreateUserAccountRequest request);
+    @Mapping(target = "identifier",source = "request.email")
+    @Mapping(target = "credential",source = "request.password")
+    @Mapping(target = "userId",source = "userId")
+    CreateAccountRequest buildCreateAccountRequest(CreateUserAccountRequest request,Long userId);
 
 
     UpdateUserRequest buildUserUpdateRequest(UpdateUserAccountRequest request);
