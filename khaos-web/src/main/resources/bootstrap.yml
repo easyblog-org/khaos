@@ -1,0 +1,21 @@
+server:
+  port: 8001
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health
+spring:
+  profiles:
+    active: dev
+  application:
+    name: demo
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8090
+        file-extension: yml
+        group: DEFAULT_GROUP
+
+urls:
+  demo: http://localhost:8001
