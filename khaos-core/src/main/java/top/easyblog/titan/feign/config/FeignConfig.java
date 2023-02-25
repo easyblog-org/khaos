@@ -1,6 +1,5 @@
 package top.easyblog.titan.feign.config;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import feign.*;
 import feign.codec.Decoder;
@@ -23,12 +22,8 @@ import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.feign.config.http.encoder.CamelToUnderscoreEncoder;
 import top.easyblog.titan.feign.internal.FeignLogger;
 import top.easyblog.titan.feign.internal.OkHttpClientFactory;
-import top.easyblog.titan.feign.sign.CommonSignInterceptor;
-import top.easyblog.titan.response.ResultCode;
-import top.easyboot.sign.SignHandler;
+import top.easyblog.titan.response.KhaosResultCode;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,9 +35,6 @@ public class FeignConfig {
 
     @Autowired
     protected GsonHttpMessageConverter customGsonConverters;
-
-    @Autowired
-    protected SignHandler signHandler;
 
     @Value("${feign.custom.read-timeout:6000}")
     private int readTimeout;
@@ -89,7 +81,7 @@ public class FeignConfig {
     @Bean
     public ErrorDecoder error() {
         return (method, response) -> {
-            throw new BusinessException(ResultCode.REMOTE_INVOKE_FAIL, response.reason());
+            throw new BusinessException(KhaosResultCode.REMOTE_INVOKE_FAIL, response.reason());
         };
     }
 
@@ -101,12 +93,6 @@ public class FeignConfig {
     @Bean
     public Encoder encoder() {
         return new SpringEncoder(() -> new HttpMessageConverters(false, Lists.newArrayList(customGsonConverters)));
-    }
-
-    @Bean
-    public RequestInterceptor sign() {
-        Set<String> excludes = new HashSet<>(Splitter.on(excludesPath).omitEmptyStrings().splitToList(","));
-        return new CommonSignInterceptor(signHandler, excludes);
     }
 
     @Bean

@@ -2,6 +2,7 @@ package top.easyblog.titan.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @Component
-public class LogInterceptor implements HandlerInterceptor {
+public class RequestLogInterceptor implements HandlerInterceptor {
 
     @Value("${spring.custom.enable-logging-request-details:true}")
     private Boolean enableLoggingRequestDetails;

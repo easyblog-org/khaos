@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import top.easyblog.titan.constant.Constants;
-{package}.util.IdGenerator;
-{package}.util.NetWorkUtils;
+import top.easyblog.titan.util.IdGenerator;
+import top.easyblog.titan.util.NetWorkUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

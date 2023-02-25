@@ -9,8 +9,8 @@ import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import top.easyboot.constant.Constants;
 import top.easyblog.titan.annotation.RequestParamAlias;
+import top.easyblog.titan.constant.Constants;
 
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -48,19 +48,17 @@ public class UnderlineToCamelArgumentResolver extends AbstractCustomizeArgumentR
      * @return
      */
     private Object handleParameterNames(MethodParameter parameter, NativeWebRequest webRequest) {
-        Object obj = BeanUtils.instantiate(parameter.getParameterType());
+        Object obj = BeanUtils.instantiateClass(parameter.getParameterType());
         BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(obj);
         Iterator<String> paramNames = webRequest.getParameterNames();
         while (paramNames.hasNext()) {
-            String paramName = paramNames.next();
-            if (Constants.APP_ID.equalsIgnoreCase(paramName) ||
-                    Constants.TIMESTAMP.equalsIgnoreCase(paramName) ||
-                    Constants.SIGN.equalsIgnoreCase(paramName)) {
-                continue;
+            String originalParam = paramNames.next();
+            String formattedParam = underLineToCamel(originalParam);
+            if (wrapper.isWritableProperty(formattedParam)) {
+                Object value = webRequest.getParameter(originalParam);
+                log.debug("Handle request param underline to camel ==> {}={}", originalParam, value);
+                wrapper.setPropertyValue(formattedParam, value);
             }
-            Object o = webRequest.getParameter(paramName);
-            log.info(paramName + "=" + o);
-            wrapper.setPropertyValue(underLineToCamel(paramName), o);
         }
         return obj;
     }

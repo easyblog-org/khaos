@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 8888
 management:
   endpoints:
     web:
@@ -9,13 +9,10 @@ spring:
   profiles:
     active: dev
   application:
-    name: demo
+    name: khaos
   cloud:
     nacos:
       config:
-        server-addr: localhost:8090
+        server-addr: 124.221.78.126:8090
         file-extension: yml
         group: DEFAULT_GROUP
-
-urls:
-  demo: http://localhost:8001

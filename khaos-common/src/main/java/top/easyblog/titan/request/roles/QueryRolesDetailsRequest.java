@@ -1,4 +1,4 @@
-package top.easyblog.titan.request;
+package top.easyblog.titan.request.roles;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,19 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Example of request parameter bean to query an object
- *
  * @author: frank.huang
- * @date: 2021-11-01 20:39
+ * @date: 2023-02-19 15:21
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueryUserRequest {
-
+public class QueryRolesDetailsRequest {
+    private Long id;
+    private String code;
     private String name;
-    private String address;
-    private Integer age;
-
 }

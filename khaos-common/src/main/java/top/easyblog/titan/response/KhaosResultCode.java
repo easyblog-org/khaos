@@ -11,18 +11,26 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ResultCode {
+public enum KhaosResultCode {
     //sever internal
     SUCCESS,
+    FAIL,
     INVALID_PARAMS,
     NOT_FOUND,
     INTERNAL_ERROR,
     DATA_ACCESS_FAIL,
+    AUTH_FAILED,
 
     SIGN_FAIL,
     SIGN_ERROR,
     SIGN_NOT_FOUND,
     SING_HAS_EXPIRE,
+    PARAMETER_VALIDATE_FAILED,
+
+    // 创建user失败
+    CREATE_USER_FAILED,
+    // user 未找到
+    USER_NOT_FOUND,
 
     REMOTE_INVOKE_FAIL;
 

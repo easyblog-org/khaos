@@ -5,11 +5,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import top.easyboot.exception.SignatureArgumentException;
-import top.easyboot.exception.SignatureException;
 import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.response.BaseResponse;
-import top.easyblog.titan.response.ResultCode;
+import top.easyblog.titan.response.KhaosResultCode;
 
 /**
  * @author: frank.huang
@@ -29,7 +27,7 @@ public class GlobalConsumeExceptionHandler {
     @ExceptionHandler(Exception.class)
     public BaseResponse<Object> handleException(Exception e) {
         e.printStackTrace();
-        return BaseResponse.fail(ResultCode.INTERNAL_ERROR.getCode(), e.getMessage());
+        return BaseResponse.fail(KhaosResultCode.INTERNAL_ERROR.getCode(), e.getMessage());
     }
 
     /**
@@ -41,7 +39,7 @@ public class GlobalConsumeExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public BaseResponse<Object> handleRuntimeException(RuntimeException e) {
         e.printStackTrace();
-        return BaseResponse.fail(ResultCode.INTERNAL_ERROR.getCode(), e.getMessage());
+        return BaseResponse.fail(KhaosResultCode.INTERNAL_ERROR.getCode(), e.getMessage());
     }
 
     /**
@@ -58,23 +56,12 @@ public class GlobalConsumeExceptionHandler {
 
 
     /**
-     * 处理未捕获的自定义业务异常 SignatureArgumentException、SignatureException
-     *
-     * @param e 异常
-     * @return 统一响应体
-     */
-    @ExceptionHandler({SignatureArgumentException.class,SignatureException.class})
-    public BaseResponse<Object> handleSignException(RuntimeException e) {
-        return BaseResponse.fail(ResultCode.SIGN_FAIL.getCode(), e.getMessage());
-    }
-
-    /**
      * 捕获数据库异常
      * @param e
      * @return
      */
     @ExceptionHandler(DataAccessException.class)
     public BaseResponse<Object> handleDataBaseException(DataAccessException e){
-        return BaseResponse.fail(ResultCode.DATA_ACCESS_FAIL.getCode(),e.getCause().toString());
+        return BaseResponse.fail(KhaosResultCode.DATA_ACCESS_FAIL.getCode(),e.getCause().toString());
     }
 }
