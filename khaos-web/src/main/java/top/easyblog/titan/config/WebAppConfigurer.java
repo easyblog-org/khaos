@@ -9,9 +9,10 @@ import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.feign.config.http.converter.CustomGsonHttpMessageConverter;
 import top.easyblog.titan.handler.LogInterceptor;
-import top.easyboot.handler.SignInterceptor;
+import top.easyblog.titan.response.KhaosResultCode;
 
 import java.util.List;
 
@@ -26,16 +27,12 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     private LogInterceptor logInterceptor;
 
     @Autowired
-    private SignInterceptor signInterceptor;
-
-    @Autowired
     private GsonHttpMessageConverter customConverters;
 
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor);
-        registry.addInterceptor(signInterceptor);
     }
 
 
@@ -58,7 +55,7 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     @Bean
     public ErrorViewResolver errorViewResolver() {
         return (request, status, model) -> {
-            throw new BusinessException(NestorResultCode.FAIL);
+            throw new BusinessException(KhaosResultCode.FAIL);
         };
     }
 }

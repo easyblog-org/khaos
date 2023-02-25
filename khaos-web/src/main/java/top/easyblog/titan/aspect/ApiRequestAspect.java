@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.request.BaseRequest;
-import top.easyblog.titan.response.ResultCode;
+import top.easyblog.titan.response.KhaosResultCode;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class ApiRequestAspect {
         Object[] args = pjp.getArgs();
         Arrays.stream(args).filter(arg -> Objects.nonNull(arg) && arg instanceof BaseRequest).forEach(arg -> {
             if (!((BaseRequest) arg).validate()) {
-                throw new BusinessException(ResultCode.PARAMETER_VALIDATE_FAILED, "please check parameter:" + arg);
+                throw new BusinessException(KhaosResultCode.PARAMETER_VALIDATE_FAILED, "please check parameter:" + arg);
             }
         });
         return pjp.proceed(pjp.getArgs());
