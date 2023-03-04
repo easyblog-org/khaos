@@ -19,7 +19,7 @@ public enum KhaosResultCode {
     NOT_FOUND,
     INTERNAL_ERROR,
     DATA_ACCESS_FAIL,
-    AUTH_FAILED,
+    AUTH_EXPIRED,
 
     SIGN_FAIL,
     SIGN_ERROR,
@@ -31,6 +31,10 @@ public enum KhaosResultCode {
     CREATE_USER_FAILED,
     // user 未找到
     USER_NOT_FOUND,
+    // 请求未携带Token
+    AUTH_TOKEN_NOT_FOUND,
+    // 账户 未找到
+    ACCOUNT_NOT_FOUND,
 
     REMOTE_INVOKE_FAIL;
 

@@ -1,9 +1,9 @@
-package top.easyblog.titan.handler;
+package top.easyblog.titan.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,7 +14,6 @@ import top.easyblog.titan.response.KhaosResultCode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -34,17 +33,20 @@ public class AuthInterceptor implements HandlerInterceptor {
     private AuthProperties authProperties;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Start auth request.....");
-        String token = request.getHeader(Constants.AUTH_TOKEN);
-        String expireTime = redisTemplate.opsForValue().get(token);
-        log.info("Get redis auth token {}={}", token, expireTime);
+    public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
         if (noNeedValidAuth(request)) {
             return true;
         }
-        boolean tokenExists = StringUtils.isNotBlank(expireTime) && Long.parseLong(expireTime) > 0;
+        String token = request.getHeader(Constants.AUTH_TOKEN);
+        if (StringUtils.isBlank(token)) {
+            log.info("Token not found in request header.");
+            throw new BusinessException(KhaosResultCode.AUTH_TOKEN_NOT_FOUND);
+        }
+        Long expireTime = redisTemplate.getExpire(token);
+        log.info("Get redis auth token {}={}", token, expireTime);
+        boolean tokenExists = Objects.nonNull(expireTime) && expireTime > 0;
         if (Objects.equals(tokenExists, Boolean.FALSE)) {
-            throw new BusinessException(KhaosResultCode.AUTH_FAILED);
+            throw new BusinessException(KhaosResultCode.AUTH_EXPIRED);
         }
         return true;
     }

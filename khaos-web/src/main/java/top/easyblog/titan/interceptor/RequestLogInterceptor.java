@@ -1,4 +1,4 @@
-package top.easyblog.titan.handler;
+package top.easyblog.titan.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
