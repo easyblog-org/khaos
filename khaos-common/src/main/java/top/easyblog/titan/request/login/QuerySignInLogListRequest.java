@@ -24,6 +24,8 @@ public class QuerySignInLogListRequest {
 
     private List<Long> userIds;
 
+    private Integer accountId;
+
     private Integer status;
 
     private List<Integer> statuses;

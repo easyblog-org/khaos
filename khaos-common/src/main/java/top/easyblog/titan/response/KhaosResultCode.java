@@ -43,6 +43,8 @@ public enum KhaosResultCode {
     ACCOUNT_IS_FREEZE,
     // 密码错误
     PASSWORD_VALID_FAILED,
+    // 新老密码一致
+    PASSWORD_NOT_CHANGE,
     // 没有访问权限
     NO_ACCESS_PERMISSION,
 
