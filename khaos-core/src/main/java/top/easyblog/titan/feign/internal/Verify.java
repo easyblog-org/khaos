@@ -1,8 +1,10 @@
 package top.easyblog.titan.feign.internal;
 
+import org.apache.commons.lang3.StringUtils;
 import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.response.KhaosResultCode;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -21,13 +23,19 @@ public interface Verify {
      */
     default <T> T request(Supplier<Response<T>> request) {
         Response<T> response = request.get();
-        this.throwIfFail(response, KhaosResultCode.REMOTE_INVOKE_FAIL);
+        this.throwIfFail(response, determineResultCode(response));
         return response.data();
     }
 
-    default <T> void throwIfFail(Response<T> response, KhaosResultCode khaosResultCode) {
+
+    default <T> KhaosResultCode determineResultCode(Response<T> response) {
+        return Arrays.stream(KhaosResultCode.values())
+                .filter(code -> StringUtils.equalsIgnoreCase(code.name(), response.resultCode())).findAny().orElse(KhaosResultCode.REMOTE_INVOKE_FAIL);
+    }
+
+    default <T> void throwIfFail(Response<T> response, KhaosResultCode resultCode) {
         if (Objects.isNull(response) || !response.isSuccess()) {
-            throw new BusinessException(khaosResultCode, response.message());
+            throw new BusinessException(resultCode, response.message());
         }
     }
 

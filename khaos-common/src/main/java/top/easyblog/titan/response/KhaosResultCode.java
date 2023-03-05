@@ -33,8 +33,18 @@ public enum KhaosResultCode {
     USER_NOT_FOUND,
     // 请求未携带Token
     AUTH_TOKEN_NOT_FOUND,
-    // 账户 未找到
+    // 账户未找到
     ACCOUNT_NOT_FOUND,
+    //账户未激活
+    ACCOUNT_IS_PRE_ACTIVE,
+    //账户被删除
+    ACCOUNT_IS_DELETE,
+    //账户被冻结
+    ACCOUNT_IS_FREEZE,
+    // 密码错误
+    PASSWORD_VALID_FAILED,
+    // 没有访问权限
+    NO_ACCESS_PERMISSION,
 
     REMOTE_INVOKE_FAIL;
 

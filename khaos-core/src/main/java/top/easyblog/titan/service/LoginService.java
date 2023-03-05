@@ -1,22 +1,28 @@
 package top.easyblog.titan.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.easyblog.titan.bean.account.AccountBean;
 import top.easyblog.titan.bean.login.LoginDetailsBean;
+import top.easyblog.titan.bean.roles.RolesBean;
 import top.easyblog.titan.converter.BeanMapper;
 import top.easyblog.titan.enums.IdentifierType;
 import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.feign.client.AccountClient;
 import top.easyblog.titan.feign.client.LoginClient;
+import top.easyblog.titan.feign.client.ZeusClient;
 import top.easyblog.titan.request.account.QueryAccountRequest;
 import top.easyblog.titan.request.login.AdminLoginRequest;
 import top.easyblog.titan.request.login.LoginRequest;
 import top.easyblog.titan.request.login.LogoutRequest;
+import top.easyblog.titan.request.user.QueryUserRequest;
 import top.easyblog.titan.response.KhaosResultCode;
 
-import java.util.Objects;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author: frank.huang
@@ -30,22 +36,36 @@ public class LoginService {
     @Autowired
     private LoginClient loginClient;
 
-
     @Autowired
     private AccountClient accountClient;
+
+    @Autowired
+    private ZeusClient zeusClient;
 
     @Autowired
     private BeanMapper beanMapper;
 
 
     public LoginDetailsBean login(AdminLoginRequest request) {
-        AccountBean accountBean = accountClient.request(() -> accountClient.details(QueryAccountRequest.builder()
+        // 查询登录邮箱账号是否存在
+        AccountBean accountBean = Optional.ofNullable(accountClient.request(() -> accountClient.details(QueryAccountRequest.builder()
                 .identityType(IdentifierType.E_MAIL.getCode())
                 .identifier(request.getEmail())
-                .build()));
-        if (Objects.isNull(accountBean)) {
-            throw new BusinessException(KhaosResultCode.ACCOUNT_NOT_FOUND);
-        }
+                .build()))).orElseThrow(() -> new BusinessException(KhaosResultCode.ACCOUNT_NOT_FOUND));
+
+        Optional.ofNullable(zeusClient.request(() -> zeusClient.queryUserDetails(QueryUserRequest.builder()
+                .id(accountBean.getUserId()).sections("roles").build()))).map(item -> {
+            List<RolesBean> roles = item.getRoles();
+            if (CollectionUtils.isEmpty(roles)) {
+                return null;
+            }
+            return roles.stream().filter(role -> {
+                // 只有管理员，负责人可以登录
+                return StringUtils.equalsIgnoreCase("admin", role.getCode()) ||
+                        StringUtils.equalsIgnoreCase("root", role.getCode()) ||
+                        StringUtils.equalsIgnoreCase("owner", role.getCode().toLowerCase());
+            }).findFirst().orElse(null);
+        }).orElseThrow(() -> new BusinessException(KhaosResultCode.NO_ACCESS_PERMISSION));
 
         LoginRequest loginRequest = beanMapper.buildAdminLoginRequest(request);
         loginRequest.setExtra(beanMapper.buildAdminSignLogReqeust(request, accountBean));
