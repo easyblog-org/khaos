@@ -11,7 +11,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.feign.config.http.converter.CustomGsonHttpMessageConverter;
-import top.easyblog.titan.handler.RequestLogInterceptor;
+import top.easyblog.titan.interceptor.AuthInterceptor;
+import top.easyblog.titan.interceptor.RequestLogInterceptor;
 import top.easyblog.titan.response.KhaosResultCode;
 
 import java.util.List;
@@ -27,12 +28,16 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     private RequestLogInterceptor requestLogInterceptor;
 
     @Autowired
+    private AuthInterceptor authInterceptor;
+
+    @Autowired
     private GsonHttpMessageConverter customConverters;
 
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(requestLogInterceptor);
+        registry.addInterceptor(authInterceptor);
     }
 
 

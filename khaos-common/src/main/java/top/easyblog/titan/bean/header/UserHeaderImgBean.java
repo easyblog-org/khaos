@@ -1,4 +1,4 @@
-package top.easyblog.titan.bean.user;
+package top.easyblog.titan.bean.header;
 
 import lombok.Data;
 

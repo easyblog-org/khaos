@@ -3,23 +3,15 @@ package top.easyblog.titan.feign.client;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
-import top.easyblog.titan.bean.roles.RolesBean;
 import top.easyblog.titan.bean.user.UserDetailsBean;
 import top.easyblog.titan.feign.config.CommonFeignConfig;
 import top.easyblog.titan.feign.internal.BaseClientResponse;
-import top.easyblog.titan.feign.internal.Response;
 import top.easyblog.titan.feign.internal.Verify;
-import top.easyblog.titan.request.account.CreateAccountRequest;
-import top.easyblog.titan.request.account.UpdateAccountRequest;
-import top.easyblog.titan.request.roles.QueryRolesDetailsRequest;
-import top.easyblog.titan.request.roles.QueryRolesListRequest;
 import top.easyblog.titan.request.user.CreateUserRequest;
 import top.easyblog.titan.request.user.QueryUserListRequest;
 import top.easyblog.titan.request.user.QueryUserRequest;
 import top.easyblog.titan.request.user.UpdateUserRequest;
 import top.easyblog.titan.response.PageResponse;
-
-import java.util.List;
 
 /**
  * @author: frank.huang

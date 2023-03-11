@@ -41,5 +41,5 @@ public final class Constants {
     public static final long TEN_MINUS = 10*60*1000;
 
     // 请求认证token
-    public static final String AUTH_TOKEN="auth_token";
+    public static final String AUTH_TOKEN="Authorization";
 }
