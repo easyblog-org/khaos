@@ -37,6 +37,13 @@ public class LoginController {
     }
 
     @ResponseWrapper
+    @GetMapping("/refresh")
+    public AuthenticationDetailsBean refresh(@RequestParam("user_id") Long userId,
+                                             @RequestParam("account_id") Long accountId) {
+        return loginService.refresh(userId, accountId);
+    }
+
+    @ResponseWrapper
     @PostMapping("/modify-pwd")
     public void modifyPassword(@RequestBody AdminPasswordModifyRequest request) {
         loginService.modifyPassword(request);

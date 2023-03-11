@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import top.easyblog.titan.bean.account.AccountBean;
+import top.easyblog.titan.bean.header.UserHeaderImgBean;
 import top.easyblog.titan.bean.login.SignInLogBean;
 import top.easyblog.titan.bean.roles.RolesBean;
 
