@@ -21,8 +21,13 @@ public class StaticController {
 
     @ResponseWrapper
     @GetMapping("/identity_types")
-    public Object queryAllIdentityType(){
+    public Object queryAllIdentityType() {
         return staticService.queryAllIdentityType();
     }
 
+    @ResponseWrapper
+    @GetMapping("/continents")
+    public Object queryAllContinent() {
+        return staticService.queryAllContinent();
+    }
 }

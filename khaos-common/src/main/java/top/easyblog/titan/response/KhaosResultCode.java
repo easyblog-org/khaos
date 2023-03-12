@@ -27,6 +27,10 @@ public enum KhaosResultCode {
     SING_HAS_EXPIRE,
     PARAMETER_VALIDATE_FAILED,
 
+    // 非法洲Code
+    INVALID_CONTINENT_TYPE,
+    PHONE_AREA_CODE_ALREADY_EXISTS,
+
     // 创建user失败
     CREATE_USER_FAILED,
     // user 未找到
