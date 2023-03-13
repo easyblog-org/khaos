@@ -12,6 +12,8 @@ import top.easyblog.titan.request.area.QueryPhoneAreaCodeListRequest;
 import top.easyblog.titan.request.area.UpdatePhoneAreaCodeRequest;
 import top.easyblog.titan.response.PageResponse;
 
+import java.util.List;
+
 /**
  * @author: frank.huang
  * @date: 2023-03-12 14:54
@@ -30,5 +32,9 @@ public interface PhoneAreaClient extends Verify {
     @PutMapping("/v1/in/area-code/{id}")
     BaseClientResponse<Void> update(@PathVariable("id") Long id,
                                     @RequestBody UpdatePhoneAreaCodeRequest request);
+
+    @DeleteMapping("/v1/in/area-code")
+    BaseClientResponse<Void> deleteByIds(@RequestParam("phone_area_code_ids") List<Long> phoneAreaCodeIds,
+                                         @RequestParam("password") String password);
 
 }

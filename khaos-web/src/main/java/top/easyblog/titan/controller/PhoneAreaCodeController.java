@@ -9,6 +9,8 @@ import top.easyblog.titan.request.area.QueryPhoneAreaCodeListRequest;
 import top.easyblog.titan.request.area.UpdatePhoneAreaCodeRequest;
 import top.easyblog.titan.service.PhoneAreaService;
 
+import java.util.List;
+
 /**
  * @author: frank.huang
  * @date: 2023-03-12 17:51
@@ -36,6 +38,13 @@ public class PhoneAreaCodeController {
     @GetMapping("/tree")
     public Object queryPhoneAreaCodeMap(@RequestParamAlias QueryPhoneAreaCodeListRequest request) {
         return phoneAreaService.queryPhoneAreaCodeMap(request);
+    }
+
+    @ResponseWrapper
+    @DeleteMapping("")
+    public void deleteByIds(@RequestParam("phone_area_code_ids") List<Long> phoneAreaCodeIds,
+                            @RequestParam("password") String password) {
+        phoneAreaService.deleteByIds(phoneAreaCodeIds, password);
     }
 
 }

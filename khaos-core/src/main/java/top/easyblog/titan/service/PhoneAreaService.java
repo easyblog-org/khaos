@@ -82,4 +82,9 @@ public class PhoneAreaService {
     public void update(Long phoneAreaCodeId, UpdatePhoneAreaCodeRequest request) {
         phoneAreaClient.request(() -> phoneAreaClient.update(phoneAreaCodeId, request));
     }
+
+
+    public void deleteByIds(List<Long> ids, String password) {
+        phoneAreaClient.request(() -> phoneAreaClient.deleteByIds(ids, password));
+    }
 }
