@@ -36,10 +36,10 @@ public class AccountController {
     }
 
     @ResponseWrapper
-    @PutMapping("/{account_id}")
-    public void update(@PathVariable("account_id") Long accountId,
+    @PutMapping("/{account_code}")
+    public void update(@PathVariable("account_code") String accountCode,
                        @RequestBody @Valid UpdateAccountRequest request) {
-        accountService.updateAccount(accountId,request);
+        accountService.updateAccount(accountCode, request);
     }
 
     @ResponseWrapper

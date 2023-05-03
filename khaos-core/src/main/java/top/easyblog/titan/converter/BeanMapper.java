@@ -25,8 +25,8 @@ public interface BeanMapper {
 
     @Mapping(target = "identifier", source = "request.email")
     @Mapping(target = "credential", source = "request.password")
-    @Mapping(target = "userId", source = "userId")
-    CreateAccountRequest buildCreateAccountRequest(CreateUserAccountRequest request, Long userId);
+    @Mapping(target = "userCode", source = "userCode")
+    CreateAccountRequest buildCreateAccountRequest(CreateUserAccountRequest request, String userCode);
 
 
     UpdateUserRequest buildUserUpdateRequest(UpdateUserAccountRequest request);
@@ -40,7 +40,7 @@ public interface BeanMapper {
     @Mapping(target = "credential", source = "request.password")
     LoginRequest buildAdminLoginRequest(AdminLoginRequest request);
 
-   
+
     @Mapping(target = "ip", source = "request.ip")
     @Mapping(target = "device", source = "request.device")
     @Mapping(target = "operationSystem", source = "request.operationSystem")

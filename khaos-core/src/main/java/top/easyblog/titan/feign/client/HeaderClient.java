@@ -16,8 +16,8 @@ import top.easyblog.titan.request.header.QueryUserHeaderImgRequest;
  * @author: frank.huang
  * @date: 2023-03-11 15:34
  */
-@FeignClient(name = "header-image", url = "${urls.zeus}", configuration = CommonFeignConfig.class)
-public interface HeaderImageClient extends Verify {
+@FeignClient(name = "header-image", url = "${urls.easyblog}", configuration = CommonFeignConfig.class)
+public interface HeaderClient extends Verify {
 
     @PostMapping("/v1/in/header-img")
     BaseClientResponse<Void> create(@RequestBody CreateUserHeaderImgRequest request);

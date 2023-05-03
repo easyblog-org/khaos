@@ -7,7 +7,7 @@ import top.easyblog.titan.annotation.ResponseWrapper;
 import top.easyblog.titan.bean.header.UserHeaderImgBean;
 import top.easyblog.titan.request.header.CreateUserHeaderImgRequest;
 import top.easyblog.titan.request.header.QueryUserHeaderImgRequest;
-import top.easyblog.titan.service.HeaderImageService;
+import top.easyblog.titan.service.HeaderService;
 
 import javax.validation.Valid;
 
@@ -17,10 +17,10 @@ import javax.validation.Valid;
  */
 @RequestMapping("/v1/header-image")
 @RestController
-public class HeaderImageController {
+public class HeaderController {
 
     @Autowired
-    private HeaderImageService headerImageService;
+    private HeaderService headerImageService;
 
     @ResponseWrapper
     @PostMapping

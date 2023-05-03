@@ -10,7 +10,7 @@ import top.easyblog.titan.bean.account.AccountBean;
 import top.easyblog.titan.bean.header.UserHeaderImgBean;
 import top.easyblog.titan.bean.login.AuthenticationDetailsBean;
 import top.easyblog.titan.bean.login.LoginDetailsBean;
-import top.easyblog.titan.bean.login.SignInLogBean;
+import top.easyblog.titan.bean.login.LoginLogBean;
 import top.easyblog.titan.bean.roles.RolesBean;
 import top.easyblog.titan.bean.user.UserDetailsBean;
 import top.easyblog.titan.converter.BeanMapper;
@@ -44,13 +44,13 @@ public class LoginService {
     private AccountClient accountClient;
 
     @Autowired
-    private ZeusClient zeusClient;
+    private UserClient userClient;
 
     @Autowired
-    private SignInLogClient signInLogClient;
+    private LoginLogClient signInLogClient;
 
     @Autowired
-    private HeaderImageClient headerImageClient;
+    private HeaderClient headerImageClient;
 
     @Autowired
     private BeanMapper beanMapper;
@@ -63,8 +63,9 @@ public class LoginService {
                 .identifier(request.getEmail())
                 .build()))).orElseThrow(() -> new BusinessException(KhaosResultCode.ACCOUNT_NOT_FOUND));
 
-        Optional.ofNullable(zeusClient.request(() -> zeusClient.queryUserDetails(QueryUserRequest.builder()
-                .id(accountBean.getUserId()).sections("roles").build()))).map(item -> {
+        UserDetailsBean userDetailsBean = userClient.request(() -> userClient.queryUserDetails(QueryUserRequest.builder()
+                .code(accountBean.getUserCode()).sections("roles").build()));
+        Optional.ofNullable(userDetailsBean).map(item -> {
             List<RolesBean> roles = item.getRoles();
             if (CollectionUtils.isEmpty(roles)) {
                 return null;
@@ -103,22 +104,22 @@ public class LoginService {
 
         UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest();
         updateAccountRequest.setCredential(request.getConfigPassword());
-        accountClient.request(() -> accountClient.updateAccount(accountBean.getId(), updateAccountRequest));
+        accountClient.request(() -> accountClient.updateAccount(accountBean.getCode(), updateAccountRequest));
     }
 
 
-    public PageResponse<SignInLogBean> querySignLogs(QuerySignInLogListRequest request) {
+    public PageResponse<LoginLogBean> queryLoginLogs(QueryLoginLogListRequest request) {
         return signInLogClient.request(() -> signInLogClient.querySignInLogs(request));
     }
 
-    public AuthenticationDetailsBean refresh(Long userId, Long accountId) {
-        UserDetailsBean userDetailsBean = zeusClient.request(() -> zeusClient.queryUserDetails(QueryUserRequest.builder().id(userId).build()));
+    public AuthenticationDetailsBean refresh(String userCode, String accountCode) {
+        UserDetailsBean userDetailsBean = userClient.request(() -> userClient.queryUserDetails(QueryUserRequest.builder().code(userCode).build()));
         return Optional.ofNullable(userDetailsBean).map(bean -> {
-            AccountBean accountBean = accountClient.request(() -> accountClient.details(QueryAccountRequest.builder().id(accountId).build()));
+            AccountBean accountBean = accountClient.request(() -> accountClient.details(QueryAccountRequest.builder().code(accountCode).build()));
             bean.setCurrAccount(accountBean);
 
             UserHeaderImgBean userHeaderImgBean = headerImageClient.request(() -> headerImageClient.details(QueryUserHeaderImgRequest.builder()
-                    .userId(userId).status(BooleanUtils.toInteger(Boolean.TRUE)).build()));
+                    .userCode(userCode).status(BooleanUtils.toInteger(Boolean.TRUE)).build()));
             bean.setUserCurrentImages(userHeaderImgBean);
             return AuthenticationDetailsBean.builder().user(bean).build();
         }).orElse(null);

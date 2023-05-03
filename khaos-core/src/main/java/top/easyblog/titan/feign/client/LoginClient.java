@@ -14,7 +14,7 @@ import top.easyblog.titan.request.login.LogoutRequest;
  * @author: frank.huang
  * @date: 2023-03-03 20:23
  */
-@FeignClient(name = "login", url = "${urls.zeus}", configuration = CommonFeignConfig.class)
+@FeignClient(name = "login", url = "${urls.easyblog}", configuration = CommonFeignConfig.class)
 public interface LoginClient extends Verify {
 
     /**

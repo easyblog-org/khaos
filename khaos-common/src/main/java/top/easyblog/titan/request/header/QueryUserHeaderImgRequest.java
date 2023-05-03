@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueryUserHeaderImgRequest {
-    private Long id;
-    private Long userId;
+    private String code;
+    private String userCode;
     private Integer status;
 }

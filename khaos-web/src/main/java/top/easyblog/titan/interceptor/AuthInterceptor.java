@@ -15,6 +15,7 @@ import top.easyblog.titan.response.KhaosResultCode;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 请求认证拦截器
@@ -53,6 +54,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private boolean noNeedValidAuth(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        return authProperties.getWhiteList().contains(requestURI);
+        return Optional.ofNullable(authProperties.getWhiteList()).map(whiteList -> whiteList.contains(requestURI)).orElse(true);
     }
 }

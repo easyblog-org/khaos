@@ -9,16 +9,15 @@ import java.util.Date;
  * @date 2022/01/30 10:35
  */
 @Data
-public class SignInLogBean {
-    private Long id;
+public class LoginLogBean {
 
-    private Long userId;
+    private String userCode;
 
     private String token;
 
     private Integer status;
 
-    private String ip;
+    private String ipAddress;
 
     private String device;
 

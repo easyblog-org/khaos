@@ -15,16 +15,16 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuerySignInLogListRequest {
-    private Long id;
+public class QueryLoginLogListRequest {
+    private String code;
 
-    private List<Long> ids;
+    private List<String> codes;
 
-    private Long userId;
+    private String userCode;
 
-    private List<Long> userIds;
+    private List<String> userCodes;
 
-    private Integer accountId;
+    private String accountCode;
 
     private Integer status;
 

@@ -10,11 +10,10 @@ import java.util.Date;
  */
 @Data
 public class UserHeaderImgBean {
-    private Long id;
 
     private String headerImgUrl;
 
-    private Long userId;
+    private String userCode;
 
     private Boolean isCurrentHeader;
 

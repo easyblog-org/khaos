@@ -19,7 +19,7 @@ import java.util.List;
  * @author: frank.huang
  * @date: 2023-02-25 14:27
  */
-@FeignClient(name = "roles", url = "${urls.zeus}", configuration = CommonFeignConfig.class)
+@FeignClient(name = "roles", url = "${urls.easyblog}", configuration = CommonFeignConfig.class)
 public interface RolesClient extends Verify {
 
     /**

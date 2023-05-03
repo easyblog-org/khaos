@@ -8,7 +8,6 @@ import lombok.Data;
  */
 @Data
 public class RolesBean {
-    private Long id;
 
     private String code;
 

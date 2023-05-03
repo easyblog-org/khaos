@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import top.easyblog.titan.bean.account.AccountBean;
 import top.easyblog.titan.bean.header.UserHeaderImgBean;
-import top.easyblog.titan.bean.login.SignInLogBean;
+import top.easyblog.titan.bean.login.LoginLogBean;
 import top.easyblog.titan.bean.roles.RolesBean;
 
 import java.util.Date;
@@ -23,10 +23,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetailsBean {
-    /**
-     * 用户id
-     */
-    private Long id;
     /**
      * 用户Code
      */
@@ -62,7 +58,7 @@ public class UserDetailsBean {
     /**
      * 当前登录设备列表
      */
-    private List<SignInLogBean> signInLogs;
+    private List<LoginLogBean> signInLogs;
     /**
      * 用户等级
      */

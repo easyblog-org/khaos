@@ -17,8 +17,8 @@ import top.easyblog.titan.response.PageResponse;
  * @author: frank.huang
  * @date: 2023-02-25 14:27
  */
-@FeignClient(name = "zeus", url = "${urls.zeus}", configuration = CommonFeignConfig.class)
-public interface ZeusClient extends Verify {
+@FeignClient(name = "user", url = "${urls.easyblog}", configuration = CommonFeignConfig.class)
+public interface UserClient extends Verify {
 
     /**
      * 创建用户

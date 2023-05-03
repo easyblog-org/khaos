@@ -18,7 +18,7 @@ import java.util.List;
  * @author: frank.huang
  * @date: 2023-03-12 14:54
  */
-@FeignClient(name = "phone-area", url = "${urls.zeus}", configuration = CommonFeignConfig.class)
+@FeignClient(name = "phone-area", url = "${urls.easyblog}", configuration = CommonFeignConfig.class)
 public interface PhoneAreaClient extends Verify {
 
     @PostMapping("/v1/in/area-code")

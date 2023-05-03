@@ -13,14 +13,13 @@ public class CreateAccountRequest {
     /**
      * 用户id
      */
-    private Long userId;
+    private String userCode;
     /**
      * 账号类型
-     *
      */
     private Integer identityType;
     /**
-     *  账号
+     * 账号
      */
     private String identifier;
     /**
