@@ -30,4 +30,22 @@ public class StaticController {
     public Object queryAllContinent() {
         return staticService.queryAllContinent();
     }
+
+    @ResponseWrapper
+    @GetMapping("/msg-type")
+    public Object queryAllMsgType() {
+        return staticService.queryAllMessageType();
+    }
+
+    @ResponseWrapper
+    @GetMapping("/msg-shield-type")
+    public Object queryAllMsgShieldType() {
+        return staticService.queryAllMessageShieldType();
+    }
+
+    @ResponseWrapper
+    @GetMapping("/msg-config-type")
+    public Object queryAllMessageConfigype() {
+        return staticService.queryAllMessageConfigype();
+    }
 }

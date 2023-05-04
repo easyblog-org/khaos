@@ -4,8 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import top.easyblog.titan.bean.enums.StaticOption;
-import top.easyblog.titan.enums.ContinentEnum;
-import top.easyblog.titan.enums.IdentifierType;
+import top.easyblog.titan.enums.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,5 +41,36 @@ public class StaticService {
                 }).collect(Collectors.toList());
     }
 
+
+    public List<StaticOption> queryAllMessageType() {
+        return Arrays.stream(MessageTemplateType.values()).filter(Objects::nonNull)
+                .map(item -> {
+                    StaticOption option = new StaticOption();
+                    option.setKey(item.getCode());
+                    option.setValue(item.getDesc());
+                    return option;
+                }).distinct().collect(Collectors.toList());
+    }
+
+
+    public List<StaticOption> queryAllMessageShieldType() {
+        return Arrays.stream(MessageShieldType.values()).filter(Objects::nonNull)
+                .map(item -> {
+                    StaticOption option = new StaticOption();
+                    option.setKey(item.getCode());
+                    option.setValue(item.getDesc());
+                    return option;
+                }).distinct().collect(Collectors.toList());
+    }
+
+    public List<StaticOption> queryAllMessageConfigype() {
+        return Arrays.stream(MessageConfigType.values()).filter(Objects::nonNull)
+                .map(item -> {
+                    StaticOption option = new StaticOption();
+                    option.setKey(item.name().toLowerCase());
+                    option.setValue(item.getDesc());
+                    return option;
+                }).distinct().collect(Collectors.toList());
+    }
 
 }

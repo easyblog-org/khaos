@@ -54,6 +54,10 @@ public enum KhaosResultCode {
     PASSWORD_NOT_CHANGE,
     // 没有访问权限
     NO_ACCESS_PERMISSION,
+    // 需要配置消息参数
+    MESSAGE_PARAM_CONFIG_REQUIRED,
+    // 需要配置消息接收人
+    MESSAGE_PARAM_CONFIG_RECEIVER_REQUIRED,
 
     REMOTE_INVOKE_FAIL;
 
