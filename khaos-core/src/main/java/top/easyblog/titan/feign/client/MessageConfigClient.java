@@ -4,14 +4,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
 import top.easyblog.titan.bean.message.MessageConfigBean;
-import top.easyblog.titan.bean.message.MessageTemplateBean;
 import top.easyblog.titan.feign.config.CommonFeignConfig;
 import top.easyblog.titan.feign.internal.BaseClientResponse;
 import top.easyblog.titan.feign.internal.Verify;
 import top.easyblog.titan.request.message.CreateMessageConfigRequest;
-import top.easyblog.titan.request.template.QueryMessageTemplateRequest;
-import top.easyblog.titan.request.template.QueryMessageTemplatesRequest;
-import top.easyblog.titan.request.template.UpdateMessageTemplateRequest;
+import top.easyblog.titan.request.message.QueryMessageConfigRequest;
+import top.easyblog.titan.request.message.QueryMessageConfigsRequest;
+import top.easyblog.titan.request.message.UpdateMessageConfigRequest;
 import top.easyblog.titan.response.PageResponse;
 
 /**
@@ -22,7 +21,7 @@ import top.easyblog.titan.response.PageResponse;
 public interface MessageConfigClient extends Verify {
 
     /**
-     * 创建消息模板
+     * 创建消息配置
      *
      * @param request
      * @return
@@ -37,7 +36,7 @@ public interface MessageConfigClient extends Verify {
      * @return
      */
     @PutMapping("/v1/in/message-config/{code}")
-    BaseClientResponse<Void> update(@PathVariable("code") String code, @RequestBody UpdateMessageTemplateRequest request);
+    BaseClientResponse<Void> update(@PathVariable("code") String code, @RequestBody UpdateMessageConfigRequest request);
 
     /**
      * 查询消息模板详情
@@ -46,7 +45,7 @@ public interface MessageConfigClient extends Verify {
      * @return
      */
     @GetMapping("/v1/in/message-config")
-    BaseClientResponse<MessageTemplateBean> queryMessageTemplateDetails(@SpringQueryMap QueryMessageTemplateRequest request);
+    BaseClientResponse<MessageConfigBean> queryMessageConfigDetails(@SpringQueryMap QueryMessageConfigRequest request);
 
     /**
      * 查询消息模板列表
@@ -55,6 +54,6 @@ public interface MessageConfigClient extends Verify {
      * @return
      */
     @GetMapping("/v1/in/message-configs")
-    BaseClientResponse<PageResponse<MessageTemplateBean>> queryMessageTemplateList(@SpringQueryMap QueryMessageTemplatesRequest request);
+    BaseClientResponse<PageResponse<MessageConfigBean>> queryMessageConfigList(@SpringQueryMap QueryMessageConfigsRequest request);
 
 }

@@ -73,4 +73,13 @@ public class StaticService {
                 }).distinct().collect(Collectors.toList());
     }
 
+    public List<StaticOption> queryAllMessagePushChannel() {
+        return Arrays.stream(MessageSendChannel.values()).filter(Objects::nonNull)
+                .map(item -> {
+                    StaticOption option = new StaticOption();
+                    option.setKey(item.getCode());
+                    option.setValue(item.getDesc());
+                    return option;
+                }).distinct().collect(Collectors.toList());
+    }
 }

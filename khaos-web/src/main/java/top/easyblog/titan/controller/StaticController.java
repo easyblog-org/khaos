@@ -48,4 +48,12 @@ public class StaticController {
     public Object queryAllMessageConfigype() {
         return staticService.queryAllMessageConfigype();
     }
+
+
+    @ResponseWrapper
+    @GetMapping("/msg-push-channel")
+    public Object queryAllMessagePushChannel() {
+        return staticService.queryAllMessagePushChannel();
+    }
+
 }

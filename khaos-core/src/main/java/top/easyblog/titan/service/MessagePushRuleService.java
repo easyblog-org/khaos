@@ -3,22 +3,24 @@ package top.easyblog.titan.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.easyblog.titan.bean.message.MessageConfigBean;
+import top.easyblog.titan.bean.message.MessageConfigRuleBean;
+import top.easyblog.titan.bean.message.MessagePushRuleBean;
 import top.easyblog.titan.constant.Constants;
+import top.easyblog.titan.converter.BeanMapper;
 import top.easyblog.titan.enums.MessageConfigType;
 import top.easyblog.titan.exception.BusinessException;
 import top.easyblog.titan.feign.client.MessageConfigClient;
 import top.easyblog.titan.feign.client.MessageConfigRuleClient;
-import top.easyblog.titan.request.message.CreateMessageConfigRequest;
-import top.easyblog.titan.request.message.CreateMessageConfigRuleRequest;
-import top.easyblog.titan.request.message.CreateMessagePushRuleRequest;
+import top.easyblog.titan.request.message.*;
 import top.easyblog.titan.response.KhaosResultCode;
+import top.easyblog.titan.response.PageResponse;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +36,9 @@ public class MessagePushRuleService {
 
     @Autowired
     private MessageConfigRuleClient messageConfigRuleClient;
+
+    @Autowired
+    private BeanMapper beanMapper;
 
     /**
      * 创建消息推送规则
@@ -64,5 +69,69 @@ public class MessagePushRuleService {
             return Optional.ofNullable(messageConfigBean).map(MessageConfigBean::getCode).orElse(null);
         }).filter(Objects::nonNull).collect(Collectors.toList());
     }
+    
 
+    public MessagePushRuleBean details(QueryMessagePushRuleRequest request) {
+        MessageConfigRuleBean messageConfigRuleBean = messageConfigRuleClient.request(() -> messageConfigRuleClient.queryMessageTemplateDetails(QueryMessageConfigRuleRequest.builder()
+                .businessEvent(request.getBusinessEvent()).businessModule(request.getBusinessModule()).code(request.getCode()).build()));
+        return Optional.ofNullable(messageConfigRuleBean).map(configRule -> {
+
+            MessagePushRuleBean messagePushRuleBean = beanMapper.buildMessagePushRuleBean(configRule);
+
+            List<String> configIds = Arrays.stream(StringUtils.split(configRule.getConfigIds(), Constants.COMMA)).collect(Collectors.toList());
+            PageResponse<MessageConfigBean> configBeanPageResponse = messageConfigClient.request(() -> messageConfigClient.queryMessageConfigList(QueryMessageConfigsRequest.builder()
+                    .codes(configIds).build()));
+            if (Objects.isNull(configBeanPageResponse) || CollectionUtils.isNotEmpty(configBeanPageResponse.getData())) {
+                return messagePushRuleBean;
+            }
+
+            messagePushRuleBean.setConfigs(configBeanPageResponse.getData());
+            return messagePushRuleBean;
+        }).orElse(null);
+    }
+
+    public PageResponse<MessagePushRuleBean> list(QueryMessagePushRulesRequest request) {
+        PageResponse<MessageConfigRuleBean> configRuleBeanPageResponse = messageConfigRuleClient.request(() -> messageConfigRuleClient.queryMessageTemplateList(QueryMessageConfigRulesRequest.builder()
+                .businessEvents(request.getBusinessEvents())
+                .businessModules(request.getBusinessEvents())
+                .deleted(request.getDeleted())
+                .limit(request.getLimit())
+                .offset(request.getOffset()).build()));
+        if (Objects.isNull(configRuleBeanPageResponse) || CollectionUtils.isEmpty(configRuleBeanPageResponse.getData())) {
+            return PageResponse.<MessagePushRuleBean>builder().offset(request.getOffset()).limit(request.getLimit())
+                    .total(NumberUtils.LONG_ZERO).data(Collections.emptyList()).build();
+        }
+
+        PageResponse<MessagePushRuleBean> pageResponse = beanMapper.buildMessagePushRuleBean(configRuleBeanPageResponse);
+
+        List<MessageConfigRuleBean> messageConfigRuleBeans = configRuleBeanPageResponse.getData();
+        List<String> configIds = messageConfigRuleBeans.stream().map(config -> StringUtils.split(config.getConfigIds(), Constants.COMMA))
+                .flatMap(Arrays::stream)
+                .distinct().collect(Collectors.toList());
+        PageResponse<MessageConfigBean> configBeanPageResponse = messageConfigClient.request(() -> messageConfigClient.queryMessageConfigList(QueryMessageConfigsRequest.builder()
+                .codes(configIds).build()));
+        if (Objects.isNull(configBeanPageResponse) || CollectionUtils.isNotEmpty(configBeanPageResponse.getData())) {
+            return pageResponse;
+        }
+
+        List<MessageConfigBean> messageConfigBeans = configBeanPageResponse.getData();
+        Map<String, MessageConfigBean> configBeanMap = messageConfigBeans.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(MessageConfigBean::getCode, Function.identity(), (x, y) -> x));
+
+        List<MessagePushRuleBean> messagePushRuleBeans = pageResponse.getData();
+        messagePushRuleBeans = messagePushRuleBeans.stream().filter(Objects::nonNull).peek(pushRuleBean -> {
+            List<String> configIdList = Arrays.stream(StringUtils.split(pushRuleBean.getConfigIds(), Constants.COMMA)).collect(Collectors.toList());
+            List<MessageConfigBean> configBeanList = configIdList.stream()
+                    .filter(Objects::nonNull).map(configBeanMap::get).filter(Objects::nonNull).collect(Collectors.toList());
+            pushRuleBean.setConfigs(configBeanList);
+        }).collect(Collectors.toList());
+
+        pageResponse.setData(messagePushRuleBeans);
+        return pageResponse;
+    }
+
+    public void update(String code, UpdateMessagePushRuleRequest request) {
+
+    }
 }

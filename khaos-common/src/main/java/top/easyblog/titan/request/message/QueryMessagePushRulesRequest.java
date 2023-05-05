@@ -11,16 +11,14 @@ import java.util.List;
 
 /**
  * @author: frank.huang
- * @date: 2023-02-06 19:34
+ * @date: 2023-05-05 20:56
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QueryMessageConfigRulesRequest {
+public class QueryMessagePushRulesRequest {
     private List<Long> ids;
-
-    private List<String> codes;
 
     private Boolean deleted;
 
