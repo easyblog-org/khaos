@@ -2,6 +2,7 @@ package top.easyblog.titan.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import top.easyblog.titan.annotation.RequestParamAlias;
 import top.easyblog.titan.annotation.ResponseWrapper;
 import top.easyblog.titan.bean.message.MessageTemplateBean;
 import top.easyblog.titan.request.template.CreateMessageTemplateRequest;
@@ -41,13 +42,13 @@ public class MessageTemplateController {
 
     @ResponseWrapper
     @GetMapping("")
-    public MessageTemplateBean details(QueryMessageTemplateRequest request) {
+    public MessageTemplateBean details(@RequestParamAlias QueryMessageTemplateRequest request) {
         return templateService.details(request);
     }
 
     @ResponseWrapper
     @GetMapping("/list")
-    public PageResponse<MessageTemplateBean> queryList(QueryMessageTemplatesRequest request) {
+    public PageResponse<MessageTemplateBean> queryList(@RequestParamAlias QueryMessageTemplatesRequest request) {
         return templateService.list(request);
     }
 

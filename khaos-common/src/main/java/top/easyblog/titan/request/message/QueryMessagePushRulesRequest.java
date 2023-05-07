@@ -20,7 +20,11 @@ import java.util.List;
 public class QueryMessagePushRulesRequest {
     private List<Long> ids;
 
+    private Byte channel;
+
     private Boolean deleted;
+
+    private String templateCode;
 
     private List<String> businessEvents;
 

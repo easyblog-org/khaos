@@ -51,7 +51,7 @@ public class MessagePushRuleService {
 
         CreateMessageConfigRuleRequest messageRuleConfig = request.getMessageRuleConfig();
         messageRuleConfig.setConfigIds(StringUtils.join(configIds, Constants.COMMA));
-        messageConfigRuleClient.create(messageRuleConfig);
+        messageConfigRuleClient.request(() -> messageConfigRuleClient.create(messageRuleConfig));
     }
 
     private List<String> createMessageConfigs(List<CreateMessageConfigRequest> messageParameterConfigs) {
@@ -69,7 +69,7 @@ public class MessagePushRuleService {
             return Optional.ofNullable(messageConfigBean).map(MessageConfigBean::getCode).orElse(null);
         }).filter(Objects::nonNull).collect(Collectors.toList());
     }
-    
+
 
     public MessagePushRuleBean details(QueryMessagePushRuleRequest request) {
         MessageConfigRuleBean messageConfigRuleBean = messageConfigRuleClient.request(() -> messageConfigRuleClient.queryMessageTemplateDetails(QueryMessageConfigRuleRequest.builder()
@@ -93,7 +93,9 @@ public class MessagePushRuleService {
     public PageResponse<MessagePushRuleBean> list(QueryMessagePushRulesRequest request) {
         PageResponse<MessageConfigRuleBean> configRuleBeanPageResponse = messageConfigRuleClient.request(() -> messageConfigRuleClient.queryMessageTemplateList(QueryMessageConfigRulesRequest.builder()
                 .businessEvents(request.getBusinessEvents())
-                .businessModules(request.getBusinessEvents())
+                .businessModules(request.getBusinessModules())
+                .templateCode(request.getTemplateCode())
+                .channel(request.getChannel())
                 .deleted(request.getDeleted())
                 .limit(request.getLimit())
                 .offset(request.getOffset()).build()));

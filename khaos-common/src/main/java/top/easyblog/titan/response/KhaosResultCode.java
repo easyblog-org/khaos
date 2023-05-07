@@ -58,6 +58,8 @@ public enum KhaosResultCode {
     MESSAGE_PARAM_CONFIG_REQUIRED,
     // 需要配置消息接收人
     MESSAGE_PARAM_CONFIG_RECEIVER_REQUIRED,
+    //消息推送规则已经存在
+    MESSAGE_CONFIG_RULE_EXISTS,
 
     REMOTE_INVOKE_FAIL;
 

@@ -20,7 +20,9 @@ import java.util.List;
 public class QueryMessageConfigRulesRequest {
     private List<Long> ids;
 
-    private List<String> codes;
+    private Byte channel;
+
+    private String templateCode;
 
     private Boolean deleted;
 

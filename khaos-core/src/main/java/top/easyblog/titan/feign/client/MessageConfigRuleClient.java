@@ -27,7 +27,7 @@ public interface MessageConfigRuleClient extends Verify {
      * @return
      */
     @PostMapping("/v1/in/config-rule")
-    BaseClientResponse create(@RequestBody CreateMessageConfigRuleRequest request);
+    BaseClientResponse<Void> create(@RequestBody CreateMessageConfigRuleRequest request);
 
     /**
      * 更新消息配置

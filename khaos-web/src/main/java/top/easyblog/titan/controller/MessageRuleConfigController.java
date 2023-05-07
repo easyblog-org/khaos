@@ -2,6 +2,7 @@ package top.easyblog.titan.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import top.easyblog.titan.annotation.RequestParamAlias;
 import top.easyblog.titan.annotation.ResponseWrapper;
 import top.easyblog.titan.bean.message.MessagePushRuleBean;
 import top.easyblog.titan.request.message.CreateMessagePushRuleRequest;
@@ -40,13 +41,13 @@ public class MessageRuleConfigController {
 
     @ResponseWrapper
     @GetMapping("")
-    public MessagePushRuleBean details(QueryMessagePushRuleRequest request) {
+    public MessagePushRuleBean details(@RequestParamAlias QueryMessagePushRuleRequest request) {
         return messagePushRuleService.details(request);
     }
 
     @ResponseWrapper
     @GetMapping("/list")
-    public PageResponse<MessagePushRuleBean> list(QueryMessagePushRulesRequest request) {
+    public PageResponse<MessagePushRuleBean> list(@RequestParamAlias QueryMessagePushRulesRequest request) {
         return messagePushRuleService.list(request);
     }
 
