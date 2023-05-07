@@ -21,8 +21,6 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 @EqualsAndHashCode(callSuper = false)
 public class CreateMessageConfigRequest implements BaseRequest {
 
-    private String code;
-
     @NotBlank(message = "Required param 'type' is not present")
     private String type;
 

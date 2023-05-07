@@ -56,4 +56,10 @@ public class StaticController {
         return staticService.queryAllMessagePushChannel();
     }
 
+    @ResponseWrapper
+    @GetMapping("/msg-template-value-type")
+    public Object queryAllMessageTemplateValueType() {
+        return staticService.queryAllMessageTemplateValueType();
+    }
+
 }

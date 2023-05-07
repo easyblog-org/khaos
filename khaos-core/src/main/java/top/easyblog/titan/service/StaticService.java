@@ -82,4 +82,14 @@ public class StaticService {
                     return option;
                 }).distinct().collect(Collectors.toList());
     }
+
+    public List<StaticOption> queryAllMessageTemplateValueType() {
+        return Arrays.stream(TemplateValueConfigType.values()).filter(Objects::nonNull)
+                .map(item -> {
+                    StaticOption option = new StaticOption();
+                    option.setKey(item.getCode());
+                    option.setValue(item.getDesc());
+                    return option;
+                }).distinct().collect(Collectors.toList());
+    }
 }
