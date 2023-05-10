@@ -57,11 +57,13 @@ public class GlobalConsumeExceptionHandler {
 
     /**
      * 捕获数据库异常
+     *
      * @param e
      * @return
      */
     @ExceptionHandler(DataAccessException.class)
-    public BaseResponse<Object> handleDataBaseException(DataAccessException e){
-        return BaseResponse.fail(KhaosResultCode.DATA_ACCESS_FAIL.getCode(),e.getCause().toString());
+    public BaseResponse<Object> handleDataBaseException(DataAccessException e) {
+        e.printStackTrace();
+        return BaseResponse.fail(KhaosResultCode.DATA_ACCESS_FAIL.getCode(), e.getCause().toString());
     }
 }

@@ -17,7 +17,7 @@ import top.easyblog.titan.response.PageResponse;
  * @author: frank.huang
  * @date: 2023-02-25 14:27
  */
-@FeignClient(name = "account", url = "${urls.zeus}", configuration = CommonFeignConfig.class)
+@FeignClient(name = "account", url = "${urls.easyblog}", configuration = CommonFeignConfig.class)
 public interface AccountClient extends Verify {
 
     /**
@@ -35,8 +35,8 @@ public interface AccountClient extends Verify {
      * @param request
      * @return
      */
-    @PutMapping("/v1/in/account/{account_id}")
-    BaseClientResponse<Void> updateAccount(@PathVariable("account_id") Long accountId,
+    @PutMapping("/v1/in/account/{code}")
+    BaseClientResponse<Void> updateAccount(@PathVariable("code") String accountCode,
                                            @RequestBody UpdateAccountRequest request);
 
 
@@ -46,8 +46,8 @@ public interface AccountClient extends Verify {
      * @param request
      * @return
      */
-    @PutMapping("/v1/in/account/{user_id}/{identify_type}")
-    BaseClientResponse<Void> updateAccount(@PathVariable("user_id") Long userId,
+    @PutMapping("/v1/in/account/{user_code}/{identify_type}")
+    BaseClientResponse<Void> updateAccount(@PathVariable("user_code") String userCode,
                                            @PathVariable("identify_type") Integer identityType,
                                            @RequestBody UpdateAccountRequest request);
 

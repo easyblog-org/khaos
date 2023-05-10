@@ -31,8 +31,8 @@ public class AccountService {
         return accountClient.request(() -> accountClient.details(request));
     }
 
-    public void updateAccount(Long accountId, UpdateAccountRequest request) {
-        accountClient.request(() -> accountClient.updateAccount(accountId, request));
+    public void updateAccount(String accountCode, UpdateAccountRequest request) {
+        accountClient.request(() -> accountClient.updateAccount(accountCode, request));
     }
 
     public PageResponse<AccountBean> queryAccountList(QueryAccountListRequest request) {

@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QueryAccountListRequest {
-    private List<Long> userIds;
+    private List<Long> userCodes;
     private Integer status;
     private String identifier;
     private Integer identityType;

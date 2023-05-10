@@ -8,9 +8,9 @@ import lombok.Data;
  */
 @Data
 public class UpdateAccountRequest {
-    private Long id;
+    private String code;
 
-    private Long userId;
+    private String userCode;
 
     private Integer identityType;
 
